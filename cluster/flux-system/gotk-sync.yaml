@@ -7,10 +7,10 @@ metadata:
 spec:
   interval: 1m0s
   ref:
-    branch: main
+    branch: kubevela
   secretRef:
     name: flux-system
-  url: ssh://git@github.com/asummers/flux-demo
+  url: ssh://git@github.com/asummers/flux-experiments
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
 kind: Kustomization

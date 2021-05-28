@@ -1,0 +1,61 @@
+apiVersion: core.oam.dev/v1beta1
+kind: ComponentDefinition
+metadata:
+  name: my-stateless
+  namespace: vela-system
+spec:
+  workload:
+    definition:
+      apiVersion: apps/v1
+      kind: Deployment
+  schematic:
+    cue:
+      template: |
+        parameter: {
+          image: string
+          replicas: *1 | int
+          imagePullPolicy: *"IfNotPresent" | string
+          command?: [...string]
+          env: [...{
+            name:   string
+            value?: string
+            valueFrom?: {
+              secretKeyRef: {
+                name: string
+                key:  string
+              }
+            }
+          }] | []
+        }
+        output: {
+          apiVersion: "apps/v1"
+          kind:       "Deployment"
+          metadata: {
+            name: context.appName
+          }
+          spec: {
+            replicas: parameter.replicas
+            selector: matchLabels: {
+              "app.oam.dev/component": context.appName
+            }
+            template: {
+              metadata: labels: {
+                "app.oam.dev/component": context.appName
+                app: context.appName
+              }
+              spec: {
+                containers: [{
+                  name:  context.appName
+                  image: parameter.image
+                  imagePullPolicy: parameter.imagePullPolicy
+
+                  if parameter["command"] != _|_ {
+                    command: parameter.command
+                  }
+                }]
+              }
+            }
+          }
+        }
+
+---

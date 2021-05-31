@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: busybox-2
+  namespace: applications
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: some-site
+      app.oam.dev/component: some-site
+  template:
+    metadata:
+      labels:
+        app: some-site
+        app.oam.dev/component: some-site
+    spec:
+      containers:
+      - command:
+        - sleep
+        - infinity
+        env:
+        - name: HTTP_HOST
+          value: example.com
+        image: busybox
+        imagePullPolicy: IfNotPresent
+        name: some-site
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      restartPolicy: Always

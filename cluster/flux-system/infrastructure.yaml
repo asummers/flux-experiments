@@ -112,3 +112,27 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
+
+---
+
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: keda
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  path: ./cluster/namespaces/keda
+  prune: true
+  healthChecks:
+  - apiVersion: apps/v1
+    kind: Deployment
+    name: keda-operator
+    namespace: keda
+  - apiVersion: apps/v1
+    kind: Deployment
+    name: keda-operator-metrics-apiserver
+    namespace: keda
+  sourceRef:
+    kind: GitRepository
+    name: flux-system

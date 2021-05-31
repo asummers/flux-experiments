@@ -74,6 +74,7 @@ spec:
       domain_name: "example.com"
   interval: 10m0s
   dependsOn:
+  - name: monitoring
   - name: kubevela
   - name: kubevela-custom-definitions
   - name: kubevela-trait-definitions
@@ -92,6 +93,8 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
+  dependsOn:
+  - name: monitoring
   path: ./cluster/namespaces/keptn
   prune: true
   sourceRef:
@@ -109,6 +112,34 @@ spec:
   interval: 10m0s
   path: ./cluster/namespaces/prometheus-operator
   prune: true
+  healthChecks:
+  - apiVersion: apps/v1
+    kind: Deployment
+    name: prometheus-operator
+    namespace: prometheus-operator
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+
+---
+
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: monitoring
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  targetNamespace: monitoring
+  dependsOn:
+  - name: prometheus-operator
+  path: ./cluster/namespaces/monitoring
+  prune: true
+  healthChecks:
+  - apiVersion: monitoring.coreos.com/v1
+    kind: Prometheus
+    namespace: monitoring
+    name: prometheus
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -124,6 +155,8 @@ spec:
   interval: 10m0s
   path: ./cluster/namespaces/keda
   prune: true
+  dependsOn:
+  - name: monitoring
   healthChecks:
   - apiVersion: apps/v1
     kind: Deployment

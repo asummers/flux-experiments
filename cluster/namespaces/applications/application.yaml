@@ -19,3 +19,44 @@ spec:
             domain: "${domain_name}"
             http:
               "/": 8080
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: instrumented-app
+  namespace: some-namespace
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: instrumented-app
+  template:
+    metadata:
+      labels:
+        app: instrumented-app
+    spec:
+      containers:
+        - name: instrumented-app
+          image: fabxc/instrumented_app
+          ports:
+            - name: metrics-port
+              containerPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: instrumented-app
+  namespace: some-namespace
+  labels:
+    app: instrumented-app
+    instrumentation: prometheus
+spec:
+  selector:
+    app: instrumented-app
+  ports:
+  - name: metrics-port
+    port: 8080

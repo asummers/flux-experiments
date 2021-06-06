@@ -16,11 +16,11 @@ spec:
           replicas: *1 | int
           imagePullPolicy: *"IfNotPresent" | string
           command?: [...string]
-          env: [...{
+          envFrom: [...{
             name:   string
             value?: string
             valueFrom?: {
-              secretKeyRef: {
+              secretKeyRef?: {
                 name: string
                 key:  string
               }
@@ -52,10 +52,10 @@ spec:
                   if parameter["command"] != _|_ {
                     command: parameter.command
                   }
+
+                  envFrom: parameter.envFrom
                 }]
               }
             }
           }
         }
-
----

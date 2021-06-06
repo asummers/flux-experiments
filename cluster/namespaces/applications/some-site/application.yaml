@@ -1,0 +1,21 @@
+apiVersion: core.oam.dev/v1beta1
+kind: Application
+metadata:
+  name: some-site
+  namespace: some-namespace
+spec:
+  components:
+    - name: busybox
+      type: my-stateless
+      properties:
+        replicas: 2
+        image: "busybox"
+        command:
+          - "sleep"
+          - "infinity"
+      traits:
+        - type: my-ingress
+          properties:
+            domain: "${domain_name}"
+            http:
+              "/": 8080

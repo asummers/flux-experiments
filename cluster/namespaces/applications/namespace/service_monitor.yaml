@@ -2,7 +2,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: instrumented
-  namespace: some-namespace
+  namespace: somenamespace
   labels:
     instrumentation: prometheus
 spec:
@@ -11,6 +11,6 @@ spec:
       instrumentation: prometheus
   namespaceSelector:
     matchNames:
-    - "{namespace}"
+    - "${namespace:=somenamespace}"
   endpoints:
     - port: metrics-port

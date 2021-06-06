@@ -1,0 +1,57 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: development-namespace
+  namespace: flux-system
+spec:
+  targetNamespace: development
+  postBuild:
+    substitute:
+      namespace: development
+  interval: 10m0s
+  dependsOn:
+  - name: development
+  path: ./cluster/namespaces/applications/namespace
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+
+---
+
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: development-some-site
+  namespace: flux-system
+spec:
+  targetNamespace: development
+  postBuild:
+    substitute:
+      domain_name: "example.net"
+  interval: 10m0s
+  dependsOn:
+  - name: development-namespace
+  path: ./cluster/namespaces/applications/some-site
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+
+---
+
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta1
+kind: Kustomization
+metadata:
+  name: development-instrumented-app
+  namespace: flux-system
+spec:
+  targetNamespace: development
+  interval: 10m0s
+  dependsOn:
+  - name: development-namespace
+  path: ./cluster/namespaces/applications/instrumented-app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system

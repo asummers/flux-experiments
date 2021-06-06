@@ -12,7 +12,7 @@ spec:
   pollingInterval: 30
   cooldownPeriod:  300
   minReplicaCount: 2
-  maxReplicaCount: 10
+  maxReplicaCount: 8
   advanced:
     restoreToOriginalReplicaCount: false
     horizontalPodAutoscalerConfig:
@@ -28,5 +28,5 @@ spec:
     metadata:
       serverAddress: http://prometheus-operated.monitoring.svc.cluster.local:9090
       metricName: http_requests_total
-      query: sum(rate(http_requests_total{deployment="instrumented-app"}[2m]))
-      threshold: '100'
+      query: sum(rate(http_requests_total{container="instrumented-app",namespace="${namespace}"}[2m]))
+      threshold: '50'

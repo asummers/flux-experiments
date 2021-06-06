@@ -10,6 +10,7 @@ spec:
   serviceMonitorNamespaceSelector:
     matchLabels:
       instrumentation: prometheus
+  scrapeInterval: 30s
   resources:
     requests:
       memory: 400Mi

@@ -47,6 +47,9 @@ metadata:
   namespace: flux-system
 spec:
   targetNamespace: production
+  postBuild:
+    substitute:
+      namespace: production
   interval: 10m0s
   dependsOn:
   - name: production-namespace

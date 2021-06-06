@@ -47,6 +47,9 @@ metadata:
   namespace: flux-system
 spec:
   targetNamespace: development
+  postBuild:
+    substitute:
+      namespace: development
   interval: 10m0s
   dependsOn:
   - name: development-namespace

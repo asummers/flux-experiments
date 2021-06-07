@@ -3,7 +3,7 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-k3d cluster create testing
+k3d cluster create --config "${PWD}/config.yaml"
 
 kubectl apply -f ./cluster/flux-system/namespace.yaml
 

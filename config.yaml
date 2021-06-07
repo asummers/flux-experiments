@@ -1,0 +1,34 @@
+apiVersion: k3d.io/v1alpha2
+kind: Simple
+name: testing
+servers: 1
+agents: 2
+image: rancher/k3s:v1.20.4-k3s1
+ports:
+- port: 8080:80
+  nodeFilters:
+    - loadbalancer
+- port: 8443:443
+  nodeFilters:
+    - loadbalancer
+registries:
+  create: true
+  # config: |
+  #   mirrors:
+  #     "docker.io":
+  #       endpoint:
+  #         - http://host.k3d.internal:5000
+  #     "host.k3d.internal:5000":
+  #       endpoint:
+  #         - http://host.k3d.internal:5000
+options:
+  k3d:
+    wait: true
+    timeout: "60s"
+    disableLoadbalancer: false
+    disableImageVolume: false
+    disableRollback: false
+    disableHostIPInjection: false
+  kubeconfig:
+    updateDefaultKubeconfig: true
+    switchCurrentContext: true

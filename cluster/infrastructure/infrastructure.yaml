@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./cluster/namespaces/vela-system
+  path: ./cluster/infrastructure/namespaces/vela-system
   prune: true
   healthChecks:
   - apiVersion: apps/v1
@@ -25,7 +25,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./cluster/namespaces/vela-system/custom_definitions
+  path: ./cluster/infrastructure/namespaces/vela-system/custom_definitions
   prune: true
   dependsOn:
   - name: kubevela
@@ -47,7 +47,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./cluster/namespaces/vela-system/traits
+  path: ./cluster/infrastructure/namespaces/vela-system/traits
   prune: true
   dependsOn:
   - name: kubevela
@@ -71,7 +71,7 @@ spec:
   interval: 10m0s
   dependsOn:
   - name: monitoring
-  path: ./cluster/namespaces/keptn
+  path: ./cluster/infrastructure/namespaces/keptn
   prune: true
   sourceRef:
     kind: GitRepository
@@ -86,7 +86,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./cluster/namespaces/prometheus-operator
+  path: ./cluster/infrastructure/namespaces/prometheus-operator
   prune: true
   healthChecks:
   - apiVersion: apps/v1
@@ -109,7 +109,7 @@ spec:
   targetNamespace: monitoring
   dependsOn:
   - name: prometheus-operator
-  path: ./cluster/namespaces/monitoring
+  path: ./cluster/infrastructure/namespaces/monitoring
   prune: true
   healthChecks:
   - apiVersion: monitoring.coreos.com/v1
@@ -129,7 +129,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./cluster/namespaces/keda
+  path: ./cluster/infrastructure/namespaces/keda
   prune: true
   dependsOn:
   - name: monitoring
@@ -155,7 +155,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./cluster/namespaces/istio-operator
+  path: ./cluster/infrastructure/namespaces/istio-operator
   prune: true
   sourceRef:
     kind: GitRepository
